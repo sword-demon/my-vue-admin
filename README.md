@@ -56,3 +56,38 @@ const router = createRouter({
 
 export default router;
 ```
+
+## 配置@别名
+
+```bash
+pnpm add @types/node --save-dev
+```
+
+```ts
+import { defineConfig } from "vite";
+import vue from "@vitejs/plugin-vue";
+import path from "path";
+
+// https://vite.dev/config/
+export default defineConfig({
+  plugins: [vue()],
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+    },
+  },
+});
+```
+
+> 找不到模块“@/views/Home.vue”或其相应的类型声明
+
+在`tsconfig.app.json`添加配置,在`compilerOptions`里面添加
+
+```json
+"baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+```
+
+如果还未生效,可以重启下`vscode`
