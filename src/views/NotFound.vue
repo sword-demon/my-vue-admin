@@ -1,3 +1,4 @@
 <template>
-    <div>Home</div>
+
+    页面飞走了
 </template>

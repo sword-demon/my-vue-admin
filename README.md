@@ -91,3 +91,12 @@ export default defineConfig({
 ```
 
 如果还未生效,可以重启下`vscode`
+
+## 结构布局
+
+```bash
+cd src
+mkdir -p layouts
+```
+
+一级路由: 主页和登录页面
