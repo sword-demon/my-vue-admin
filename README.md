@@ -100,3 +100,9 @@ mkdir -p layouts
 ```
 
 一级路由: 主页和登录页面
+
+## 单独安装 element-plus 的图标
+
+```bash
+pnpm add @element-plus/icons-vue
+```
