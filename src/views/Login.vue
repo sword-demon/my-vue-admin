@@ -12,6 +12,7 @@
         status-icon
         label-width="auto"
         class="mt"
+        :rules="rules"
       >
         <el-form-item prop="username">
           <el-input
@@ -20,6 +21,7 @@
             autocomplete="off"
             placeholder="请输入用户名"
             prefix-icon="User"
+            clearable
           />
         </el-form-item>
         <el-form-item prop="password">
@@ -29,10 +31,14 @@
             placeholder="请输入密码"
             autocomplete="off"
             prefix-icon="Lock"
+            clearable
+            show-password
           />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary"> 登录 </el-button>
+          <el-button type="primary" @click="submitForm(ruleFormRef)">
+            登录
+          </el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -43,14 +49,46 @@
 import logo from "@/assets/logo.png";
 import { ref, reactive } from "vue";
 
-import type { FormInstance } from "element-plus";
+import type { FormInstance, FormRules } from "element-plus";
 
+// 定义表单对象实例
 const ruleFormRef = ref<FormInstance>();
 
-const ruleForm = reactive({
+// 定义表单类型
+interface RuleForm {
+  username: string;
+  password: string;
+}
+
+// 定义表单模型对象
+const ruleForm = reactive<RuleForm>({
   username: "",
   password: "",
 });
+
+// 定义验证规则
+const rules = reactive<FormRules<RuleForm>>({
+  username: [
+    { required: true, message: "请输入账号", trigger: "blur" },
+    { min: 3, max: 8, message: "账号在 3~8 个字符范围", trigger: "blur" },
+  ],
+  password: [
+    { required: true, message: "请输入密码", trigger: "blur" },
+    { min: 3, message: "密码至少输入 3 位", trigger: "blur" },
+  ],
+});
+
+const submitForm = async (formEl: FormInstance | undefined) => {
+  if (!formEl) return;
+  await formEl.validate((valid, fields) => {
+    if (valid) {
+      // 校验通过
+      console.log("submit");
+    } else {
+      console.log("error submit!", fields);
+    }
+  });
+};
 </script>
 
 <style lang="less" scoped>
