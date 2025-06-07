@@ -1,38 +1,3 @@
-# Vue 3 + TypeScript + Vite
-
-```bash
-pnpm install
-
-pnpm run dev
-```
-
-## 二 常规依赖安装
-
-生产依赖
-
-```bash
-pnpm add vue-router@4 pinia element-plus
-```
-
-开发依赖
-
-```bash
-pnpm add -D less
-```
-
-创建项目目录结构
-
-```bash
-cd src
-
-mkdir -p router store views utils
-```
-
-## 创建项目路由
-
-`src/router/index.ts`
-
-```typescript
 import { createRouter, createWebHistory } from "vue-router";
 import type { RouteRecordRaw } from "vue-router";
 
@@ -55,4 +20,3 @@ const router = createRouter({
 });
 
 export default router;
-```
