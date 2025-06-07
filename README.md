@@ -19,3 +19,11 @@ pnpm add vue-router@4 pinia element-plus
 ```bash
 pnpm add -D less
 ```
+
+创建项目目录结构
+
+```bash
+cd src
+
+mkdir -p router store views utils
+```
