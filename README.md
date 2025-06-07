@@ -106,3 +106,25 @@ mkdir -p layouts
 ```bash
 pnpm add @element-plus/icons-vue
 ```
+
+## 安装 mockjs 模拟后端接口
+
+```bash
+pnpm add mockjs -D
+```
+
+问题:
+
+> 无法找到模块“mockjs”的声明文件
+
+`vite-env.d.ts`
+
+```ts
+declare module "mockjs";
+```
+
+## 安装 axios
+
+```bash
+pnpm add axios
+```
