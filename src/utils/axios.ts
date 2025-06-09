@@ -34,7 +34,8 @@ service.interceptors.response.use(
   (response: AxiosResponse) => {
     console.log(response);
     // 必须 return,否则请求获取不到数据,会卡在这里
-    return response;
+    // 每个请求都得.data 所以这里直接返回到 data
+    return response.data;
   },
   (error: AxiosError) => {
     ElNotification({

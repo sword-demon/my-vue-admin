@@ -48,8 +48,11 @@
 <script setup lang="ts">
 import logo from "@/assets/logo.png";
 import { ref, reactive } from "vue";
+import { useUserStore } from "@/store/auth";
 
 import type { FormInstance, FormRules } from "element-plus";
+
+const userStore = useUserStore();
 
 // 定义表单对象实例
 const ruleFormRef = ref<FormInstance>();
@@ -83,6 +86,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
   await formEl.validate((valid, fields) => {
     if (valid) {
       // 校验通过
+      userStore.login(ruleForm);
       console.log("submit");
     } else {
       console.log("error submit!", fields);

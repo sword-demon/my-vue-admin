@@ -5,6 +5,7 @@ import router from "./router"; // 默认查找对应 .ts/.js 文件
 import ElementPlus from "element-plus";
 import "element-plus/dist/index.css";
 import { createPinia } from "pinia";
+import "./mock/index"; // 引入 mock 才能生效
 
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 
