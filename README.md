@@ -128,3 +128,7 @@ declare module "mockjs";
 ```bash
 pnpm add axios
 ```
+
+## useRouter 误区
+
+必须在组件中使用,否则不会生效,否则拿不到路由对象
