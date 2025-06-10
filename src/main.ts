@@ -2,6 +2,7 @@ import { createApp } from "vue";
 import "./style.less";
 import App from "./App.vue";
 import router from "./router"; // 默认查找对应 .ts/.js 文件
+import "@/router/guard"; // 引入导航守卫
 import ElementPlus from "element-plus";
 import "element-plus/dist/index.css";
 import { createPinia } from "pinia";

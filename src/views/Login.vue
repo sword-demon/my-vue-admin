@@ -85,12 +85,14 @@ const rules = reactive<FormRules<RuleForm>>({
 
 const submitForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return;
-  await formEl.validate((valid, fields) => {
+  await formEl.validate(async (valid, fields) => {
     if (valid) {
       // 校验通过
-      userStore.login(ruleForm);
+      // await 阻塞一下,等到登录操作完之后进行跳转,必须保证登录在跳转之前走完
+      await userStore.login(ruleForm);
       // console.log("submit");
       // 跳转至首页
+      router.push("/");
     } else {
       console.log("error submit!", fields);
     }
