@@ -1,6 +1,8 @@
 <template>
   <el-container>
-    <el-aside width="200px">Aside</el-aside>
+    <el-aside width="200px">
+      <Menu />
+    </el-aside>
     <el-container>
       <el-header>Header</el-header>
       <el-main>Main</el-main>
@@ -8,7 +10,9 @@
   </el-container>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import Menu from "@/components/navMenu/Menu.vue";
+</script>
 
 <style lang="less" scoped>
 // 左侧菜单栏宽度撑满屏幕

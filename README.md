@@ -132,3 +132,19 @@ pnpm add axios
 ## useRouter 误区
 
 必须在组件中使用,否则不会生效,否则拿不到路由对象
+
+## 如果出现错误
+
+```
+无法找到模块"@/components/xxx/xxx.vue"的声明文件
+```
+
+可以在`vite-env.d.ts`里添加以下代码
+
+```ts
+declare module "*.vue" {
+  import { ComponentOptions, type ComponentOptions } from "vue";
+  const componentOptions: ComponentOptions;
+  export default componentOptions;
+}
+```
