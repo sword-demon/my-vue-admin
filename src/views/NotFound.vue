@@ -1,4 +1,1 @@
-<template>
-
-    页面飞走了
-</template>
+<template>页面飞走了</template>
