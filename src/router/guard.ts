@@ -24,5 +24,21 @@ router.beforeEach((to) => {
       return { path: "/" };
     }
     // 去其他页面就放行,不需要写任何代码
+    // 判断有没有权限去
+    // 前提是有 meta 里的 needAuth 属性
+    if (
+      to.meta?.needAuth &&
+      !userSore.roles.some((role: string) =>
+        (to.meta.needAuth as string[]).includes(role)
+      )
+    ) {
+      return { path: "/" };
+    }
   }
 });
+
+/**
+ * 权限处理的 2 种方法
+ * 1. 前端默认不创建完整路由表,后端会返回我们权限的名称,前端路由表文件中每个路由写明该路由需要的权限名称 addRoute方法
+ * 2. 前端默认创建完整路由表,后端会返回权限的名称,在路由表文件中依旧可以设置 meta,用来写明该页面需不需要权限,以及要哪种权限
+ */

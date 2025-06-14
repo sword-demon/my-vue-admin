@@ -61,11 +61,17 @@ const routes: RouteRecordRaw[] = [
         path: "/document",
         name: "document",
         component: () => import("@/views/document/Document.vue"),
+        meta: {
+          needAuth: ["admin", "manager"],
+        },
       },
       {
         path: "/system",
         name: "system",
         component: () => import("@/views/system/System.vue"),
+        meta: {
+          needAuth: ["admin"],
+        },
       },
       {
         path: "/personal",
