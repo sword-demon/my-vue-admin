@@ -47,7 +47,8 @@ const handleCommand = (command: string) => {
   } else {
     // 清空 pinia 数据和本地存储的数据
     userStore.logout();
-    router.push({ path: "/login" });
+    // 跳转到首页
+    router.push({ path: "/" });
   }
 };
 </script>
