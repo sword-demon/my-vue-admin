@@ -10,7 +10,6 @@
       <el-main>
         <!-- 页签组件 -->
         <TabsLayout />
-        <router-view></router-view>
       </el-main>
     </el-container>
   </el-container>
