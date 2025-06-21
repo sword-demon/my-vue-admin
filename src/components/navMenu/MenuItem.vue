@@ -76,7 +76,7 @@ export default defineComponent({
 }
 
 // 样式穿透
-::v-deep .el-sub-menu__title:hover {
+:deep(.el-sub-menu__title:hover) {
   background-color: rgb(34, 136, 255) !important;
   color: #fff !important;
 }

@@ -233,6 +233,14 @@ onMounted(() => {
       },
     ],
   });
+
+  const resizeChart = () => {
+    myChart.resize();
+    myChart2.resize();
+  };
+
+  // 添加事件监听窗口大小变化
+  window.addEventListener("resize", resizeChart);
 });
 </script>
 
@@ -257,7 +265,7 @@ onMounted(() => {
     h1 {
       font-size: 36px;
     }
-    ::v-deep .el-statistic__content {
+    ::deep(.el-statistic__content) {
       margin-top: 10px !important;
       margin-bottom: 10px;
     }
