@@ -28,17 +28,19 @@
 </template>
 
 <script lang="ts" setup>
+import { useUserStore } from "@/store/auth";
 import { useTabsStore } from "@/store/tabs";
-import type { TabPaneName } from "element-plus";
 import { storeToRefs } from "pinia";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 
+const route = useRoute();
 const router = useRouter();
 const tabsStore = useTabsStore();
+const userStore = useUserStore();
+const { menu } = storeToRefs(userStore);
 // 保持响应式
 const { tabs, currentTab } = storeToRefs(tabsStore);
-
-const { setCurrentTab } = tabsStore;
+const { setCurrentTab, addTab, removeTab } = tabsStore;
 
 /**
  * 点击 tab 页签
@@ -55,9 +57,33 @@ const handleClick = ({ index }: { index: number }) => {
   router.push(tabs.value[index].url);
 };
 
-const remove = (name: TabPaneName) => {
-  console.log(name);
+const remove = (name: string) => {
+  // console.log(name);
+  removeTab(name);
+  // 跳转到当前高亮的页签
+  router.push(currentTab.value.url);
 };
+
+const findObjectByUrl = (arr: any[], url: string): any => {
+  for (const item of arr) {
+    if (item.url === url) {
+      return item;
+    }
+    if (item.children) {
+      const found = findObjectByUrl(item.children, url);
+      if (found) {
+        return found;
+      }
+    }
+  }
+
+  return null;
+};
+
+// 一进入 layout 页面就立马加载找到当前路径并添加到页签并进行高亮
+const { name, url, icon } = findObjectByUrl(menu.value, route.path);
+addTab(name, url, icon);
+setCurrentTab(name, url);
 </script>
 
 <style lang="less" scoped>

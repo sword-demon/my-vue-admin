@@ -50,8 +50,40 @@ export const useTabsStore = defineStore("tabs", () => {
     }
   };
 
+  /**
+   * The function `setCurrentTab` sets the current tab with a given name and URL.
+   * @param {string} name - The `name` parameter is a string that represents the name of the tab that
+   * you want to set.
+   * @param {string} url - The `url` parameter in the `setCurrentTab` function is a string that
+   * represents the URL of the tab that you want to set as the current tab.
+   */
   const setCurrentTab = (name: string, url: string) => {
     currentTab.value = { name, url };
+  };
+
+  /**
+   * The `removeTab` function removes a tab with a specific name from an array of tabs.
+   * @param {string} name - The `name` parameter in the `removeTab` function is a string that
+   * represents the name of the tab that needs to be removed from the `tabs` array.
+   */
+  const removeTab = (name: string) => {
+    // 不能删除当前高亮的
+    // 或者说删除当前高亮的,则必须要让前面一个页签进行高亮
+    if (currentTab.value.name === name) {
+      // 当前选中的 tab 就是你现在要删除的
+      // 找到当前这个 tab 在 tabs 中的索引
+      const index = tabs.value.findIndex((tab) => tab.name === name);
+      // 如果高亮的页签是第一个,无法删除
+      if (index !== 0) {
+        // 前移一位
+        // 路由也要进行跳转
+        currentTab.value = tabs.value[index - 1];
+      } else {
+        // 退出操作 不执行删除
+        return;
+      }
+    }
+    tabs.value = tabs.value.filter((tab) => tab.name !== name);
   };
 
   return {
@@ -59,5 +91,6 @@ export const useTabsStore = defineStore("tabs", () => {
     addTab,
     currentTab,
     setCurrentTab,
+    removeTab,
   };
 });
