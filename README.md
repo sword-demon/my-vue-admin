@@ -148,3 +148,9 @@ declare module "*.vue" {
   export default componentOptions;
 }
 ```
+
+## 安装 echarts
+
+```bash
+pnpm add echarts --save
+```

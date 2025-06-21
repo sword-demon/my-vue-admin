@@ -150,13 +150,29 @@
           </el-row>
         </div>
       </el-card>
+
+      <el-card class="mt">
+        <template #header>
+          <div class="card-header">
+            <h1>能源统计</h1>
+          </div>
+        </template>
+
+        <el-row>
+          <el-col :span="6">
+            <div ref="chartRef" style="width: 100%; height: 400px">1</div>
+          </el-col>
+          <el-col :span="18">
+            <div ref="chartRef2" style="width: 100%; height: 400px">2</div>
+          </el-col>
+        </el-row>
+      </el-card>
     </el-col>
     <el-col :span="6">2</el-col>
   </el-row>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from "vue";
 import flash from "@/assets/flash.png";
 import flash2 from "@/assets/flash2.png";
 import flash3 from "@/assets/flash3.png";
@@ -167,8 +183,56 @@ import total from "@/assets/total.png";
 import money from "@/assets/money.png";
 import daily from "@/assets/daily.png";
 
+import * as echarts from "echarts";
+import { ref, onMounted } from "vue";
+
+// vue3里不提倡操作 dom，所以不推荐使用 document.getElementById
+// 使用 ref 来操作 dom
+// 基于 dom 元素已经挂载完毕了,不能在 setup 里写了，要在 onMounted 里写
+
+const chartRef = ref(null);
+const chartRef2 = ref(null);
+
 onMounted(() => {
-  console.log(666);
+  var myChart = echarts.init(chartRef.value);
+  // 初始化的配置
+  myChart.setOption({
+    title: {
+      text: "ECharts 入门示例",
+    },
+    tooltip: {},
+    xAxis: {
+      data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"],
+    },
+    yAxis: {},
+    series: [
+      {
+        name: "销量",
+        type: "bar",
+        data: [5, 20, 36, 10, 10, 20],
+      },
+    ],
+  });
+
+  var myChart2 = echarts.init(chartRef2.value);
+  // 初始化的配置
+  myChart2.setOption({
+    title: {
+      text: "ECharts 入门示例2",
+    },
+    tooltip: {},
+    xAxis: {
+      data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"],
+    },
+    yAxis: {},
+    series: [
+      {
+        name: "销量",
+        type: "line",
+        data: [5, 20, 36, 10, 10, 20],
+      },
+    ],
+  });
 });
 </script>
 
