@@ -44,9 +44,11 @@ export default defineComponent({
   setup() {
     const tabsStore = useTabsStore();
     // 方法不用响应式
-    const { addTab } = tabsStore;
+    const { addTab, setCurrentTab } = tabsStore;
     const add = (name: string, url: string, icon: string) => {
-      addTab(name, url, icon);
+      addTab(name, url, icon); // 添加页签
+      // 设置当前高亮
+      setCurrentTab(name, url);
     };
 
     return {

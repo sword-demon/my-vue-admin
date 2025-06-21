@@ -1,6 +1,6 @@
 <template>
   <el-tabs
-    v-model="activeName"
+    v-model="currentTab.name"
     class="demo-tabs"
     @tab-click="handleClick"
     type="card"
@@ -29,24 +29,30 @@
 
 <script lang="ts" setup>
 import { useTabsStore } from "@/store/tabs";
-import type { TabPaneName, TabsPaneContext } from "element-plus";
+import type { TabPaneName } from "element-plus";
 import { storeToRefs } from "pinia";
-import { ref } from "vue";
-const activeName = ref("first");
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const tabsStore = useTabsStore();
 // 保持响应式
-const { tabs } = storeToRefs(tabsStore);
+const { tabs, currentTab } = storeToRefs(tabsStore);
 
-console.log(tabs.value);
+const { setCurrentTab } = tabsStore;
 
 /**
  * 点击 tab 页签
  * @param tab 选中项
  * @param event 事件参数
  */
-const handleClick = (tab: TabsPaneContext, event: Event) => {
-  console.log(tab, event);
+// The `const handleClick` function in the Vue script is a handler for when a tab is clicked in the
+// `el-tabs` component. It takes two parameters: `tab` of type `TabsPaneContext` and `event` of type
+// `Event`.
+// 解构赋值出来一个 index 原先是 TabContext 里的对象 index
+const handleClick = ({ index }: { index: number }) => {
+  setCurrentTab(tabs.value[index].name, tabs.value[index].url); // 设置当前高亮
+  // 设置路由跳转
+  router.push(tabs.value[index].url);
 };
 
 const remove = (name: TabPaneName) => {
