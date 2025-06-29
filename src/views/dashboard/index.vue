@@ -182,9 +182,26 @@ import remain from "@/assets/remain.png";
 import total from "@/assets/total.png";
 import money from "@/assets/money.png";
 import daily from "@/assets/daily.png";
+import { ref } from "vue";
+import { useChart } from "@/hooks/useChart";
 
-import * as echarts from "echarts";
-import { ref, onMounted } from "vue";
+const chartOptions: any = {
+  title: {
+    text: "ECharts 入门示例",
+  },
+  tooltip: {},
+  xAxis: {
+    data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"],
+  },
+  yAxis: {},
+  series: [
+    {
+      name: "销量",
+      type: "bar",
+      data: [5, 20, 36, 10, 10, 20],
+    },
+  ],
+};
 
 // vue3里不提倡操作 dom，所以不推荐使用 document.getElementById
 // 使用 ref 来操作 dom
@@ -192,56 +209,8 @@ import { ref, onMounted } from "vue";
 
 const chartRef = ref(null);
 const chartRef2 = ref(null);
-
-onMounted(() => {
-  var myChart = echarts.init(chartRef.value);
-  // 初始化的配置
-  myChart.setOption({
-    title: {
-      text: "ECharts 入门示例",
-    },
-    tooltip: {},
-    xAxis: {
-      data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"],
-    },
-    yAxis: {},
-    series: [
-      {
-        name: "销量",
-        type: "bar",
-        data: [5, 20, 36, 10, 10, 20],
-      },
-    ],
-  });
-
-  var myChart2 = echarts.init(chartRef2.value);
-  // 初始化的配置
-  myChart2.setOption({
-    title: {
-      text: "ECharts 入门示例2",
-    },
-    tooltip: {},
-    xAxis: {
-      data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"],
-    },
-    yAxis: {},
-    series: [
-      {
-        name: "销量",
-        type: "line",
-        data: [5, 20, 36, 10, 10, 20],
-      },
-    ],
-  });
-
-  const resizeChart = () => {
-    myChart.resize();
-    myChart2.resize();
-  };
-
-  // 添加事件监听窗口大小变化
-  window.addEventListener("resize", resizeChart);
-});
+useChart(chartRef, chartOptions);
+useChart(chartRef2, chartOptions);
 </script>
 
 <style lang="less" scoped>
