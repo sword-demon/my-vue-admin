@@ -238,3 +238,14 @@ Mock.mock(domainPrefix + "/chartData2", "get", () => {
     },
   };
 });
+
+// echarts 雷达图
+Mock.mock(domainPrefix + "/chartData3", "get", () => {
+  return {
+    code: 200,
+    message: "操作成功",
+    data: {
+      list: [42, 30, 200, 300, 500, 180],
+    },
+  };
+});

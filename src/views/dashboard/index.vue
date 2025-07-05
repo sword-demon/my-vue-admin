@@ -1,5 +1,5 @@
 <template>
-  <el-row>
+  <el-row :gutter="20">
     <el-col :span="18">
       <el-card>
         <div class="title">
@@ -168,7 +168,16 @@
         </el-row>
       </el-card>
     </el-col>
-    <el-col :span="6">2</el-col>
+    <el-col :span="6">
+      <el-card>
+        <template #header>
+          <div class="card-header">
+            <h1>设备总览</h1>
+          </div>
+        </template>
+        <div ref="chartRef3" style="width: 100%; height: 240px"></div>
+      </el-card>
+    </el-col>
   </el-row>
 </template>
 
@@ -184,7 +193,7 @@ import money from "@/assets/money.png";
 import daily from "@/assets/daily.png";
 import { ref, reactive } from "vue";
 import { useChart } from "@/hooks/useChart";
-import { chartDataApi, chartData2Api } from "@/api/dashboard";
+import { chartDataApi, chartData2Api, chartData3Api } from "@/api/dashboard";
 
 // 接口是异步调用的,无法保证这个执行完之后才执行 useChart
 const setChartData = async () => {
@@ -337,6 +346,47 @@ const setPieChartData = async () => {
 // 饼图
 const chartRef = ref(null);
 useChart(chartRef, setPieChartData);
+
+const setRadarChartData = async () => {
+  // 转成响应式的
+  // 配置项放到函数内部
+  const chartOptions: any = reactive({
+    title: {
+      text: "设备总览",
+    },
+    radar: {
+      indicator: [
+        { name: "闲置数", max: 65 },
+        { name: "使用数", max: 160 },
+        { name: "故障数", max: 280 },
+        { name: "维修数", max: 500 },
+        { name: "更换数", max: 260 },
+        { name: "报废数", max: 220 },
+      ],
+    },
+    series: [
+      {
+        name: "设备总览",
+        type: "radar",
+        data: [
+          {
+            value: [],
+            name: "设备总览",
+          },
+        ],
+      },
+    ],
+  });
+  const res = await chartData3Api();
+  chartOptions.series[0].data[0].value = res.data.list;
+
+  // 返回组件配置项
+  return chartOptions;
+};
+
+// 雷达图
+const chartRef3 = ref(null);
+useChart(chartRef3, setRadarChartData);
 </script>
 
 <style lang="less" scoped>
