@@ -184,7 +184,7 @@ import money from "@/assets/money.png";
 import daily from "@/assets/daily.png";
 import { ref, reactive } from "vue";
 import { useChart } from "@/hooks/useChart";
-import { chartDataApi } from "@/api/dashboard";
+import { chartDataApi, chartData2Api } from "@/api/dashboard";
 
 // 接口是异步调用的,无法保证这个执行完之后才执行 useChart
 const setChartData = async () => {
@@ -281,9 +281,62 @@ const setChartData = async () => {
 // 使用 ref 来操作 dom
 // 基于 dom 元素已经挂载完毕了,不能在 setup 里写了，要在 onMounted 里写
 
-setChartData();
 const chartRef2 = ref(null);
 useChart(chartRef2, setChartData);
+
+const setPieChartData = async () => {
+  // 转成响应式的
+  // 配置项放到函数内部
+  const chartOptions: any = reactive({
+    tooltip: {
+      trigger: "item",
+      formatter: "{a}<br/>{b}:{c}",
+    },
+    legend: {
+      top: "bottom",
+    },
+    series: [
+      {
+        name: "营收占比",
+        type: "pie",
+        radius: ["50%", "70%"],
+        center: ["50%", "50%"],
+        roseType: "area",
+        emphasis: {
+          label: {
+            show: true,
+            fontSize: "16",
+            fontWeight: "bold",
+          },
+        },
+        itemStyle: {
+          borderRadius: 8,
+        },
+        data: [],
+      },
+    ],
+    graphic: {
+      type: "text",
+      left: "center",
+      top: "center",
+      style: {
+        text: "营收占比",
+        fontSize: 24,
+        fill: "#333",
+      },
+    },
+  });
+  const res = await chartData2Api();
+  chartOptions.graphic.style.text = "营收占比";
+  chartOptions.series[0].data = res.data.list;
+
+  // 返回组件配置项
+  return chartOptions;
+};
+
+// 饼图
+const chartRef = ref(null);
+useChart(chartRef, setPieChartData);
 </script>
 
 <style lang="less" scoped>

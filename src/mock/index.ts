@@ -223,3 +223,18 @@ Mock.mock(domainPrefix + "/chartData", "get", () => {
     },
   };
 });
+
+// echarts 图表数据饼图接口
+Mock.mock(domainPrefix + "/chartData2", "get", () => {
+  return {
+    code: 200,
+    message: "操作成功",
+    data: {
+      list: [
+        { value: 35, name: "充电桩" },
+        { value: 30, name: "充电站" },
+        { value: 25, name: "充电杆" },
+      ],
+    },
+  };
+});

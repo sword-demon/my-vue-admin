@@ -2,10 +2,15 @@ import { get } from "@/utils/http";
 
 const Api = {
   chartData: "/chartData",
+  chartData2: "/chartData2",
 };
 
 function chartDataApi() {
   return get(Api.chartData);
 }
 
-export { chartDataApi };
+function chartData2Api() {
+  return get(Api.chartData2);
+}
+
+export { chartDataApi, chartData2Api };
