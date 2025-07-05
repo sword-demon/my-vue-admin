@@ -187,18 +187,77 @@ import { useChart } from "@/hooks/useChart";
 
 const chartOptions: any = {
   title: {
-    text: "ECharts 入门示例",
+    text: "电量统计",
   },
-  tooltip: {},
+  tooltip: {
+    trigger: "axis",
+  },
+  legend: {
+    data: ["充电量", "充电时长", "充电功率"],
+  },
   xAxis: {
-    data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"],
+    type: "category",
+    boundaryGap: false,
+    data: [
+      "13:00",
+      "14:00",
+      "15:00",
+      "16:00",
+      "17:00",
+      "18:00",
+      "19:00",
+      "20:00",
+      "21:00",
+    ],
   },
-  yAxis: {},
+  yAxis: {
+    type: "value",
+    axisLabel: {
+      formatter: "{value} kw",
+    },
+  },
   series: [
     {
-      name: "销量",
-      type: "bar",
-      data: [5, 20, 36, 10, 10, 20],
+      name: "充电量",
+      type: "line",
+      data: [20, 20, 36, 10, 10, 20],
+      smooth: true,
+      lineStyle: {
+        width: 5,
+      },
+      itemStyle: {
+        color: "purple",
+        shadowBlur: 10,
+        shadowColor: "rgba(0, 255, 0, 0.5)",
+      },
+    },
+    {
+      name: "充电时长",
+      type: "line",
+      data: [11, 22, 30, 13, 12, 19],
+      smooth: true,
+      lineStyle: {
+        width: 5,
+      },
+      itemStyle: {
+        color: "skyblue",
+        shadowBlur: 10,
+        shadowColor: "rgba(0, 0, 255, 0.5)",
+      },
+    },
+    {
+      name: "充电功率",
+      type: "line",
+      data: [80, 30, 30, 50, 40, 19],
+      smooth: true,
+      lineStyle: {
+        width: 5,
+      },
+      itemStyle: {
+        color: "red",
+        shadowBlur: 10,
+        shadowColor: "rgba(0, 0, 255, 0.5)",
+      },
     },
   ],
 };
