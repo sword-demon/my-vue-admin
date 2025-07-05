@@ -208,3 +208,18 @@ Mock.mock(domainPrefix + "/login", "post", (options: any) => {
     };
   }
 });
+
+// echart 图表接口,折线图
+Mock.mock(domainPrefix + "/chartData", "get", () => {
+  return {
+    code: 200,
+    message: "操作成功",
+    data: {
+      list: [
+        { name: "充电量", data: [20, 20, 36, 10, 10, 20] },
+        { name: "充电时长", data: [11, 22, 30, 13, 12, 19] },
+        { name: "充电功率", data: [80, 30, 30, 50, 40, 19] },
+      ],
+    },
+  };
+});

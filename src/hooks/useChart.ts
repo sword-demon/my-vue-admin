@@ -8,15 +8,16 @@ import { onMounted, onBeforeUnmount, ref, markRaw } from "vue";
  */
 export function useChart(
   chartRef: Ref<HTMLElement | null>,
-  initialOptions: any
+  setChartData: Function
 ) {
   const chartInstance = ref<echarts.ECharts | null>(null);
-  const chartOptions = ref(initialOptions); // 让它变成响应式的数据
+  // const chartOptions = ref(initialOptions); // 让它变成响应式的数据
 
-  const initChart = () => {
+  const initChart = async () => {
     if (chartRef.value) {
       chartInstance.value = markRaw(echarts.init(chartRef.value)); // 取消 echart 的响应式
-      chartInstance.value.setOption(chartOptions.value);
+      const options = await setChartData(); // 阻塞等到拿到结果之后再执行初始化
+      chartInstance.value.setOption(options);
     }
   };
 

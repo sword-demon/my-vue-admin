@@ -182,94 +182,108 @@ import remain from "@/assets/remain.png";
 import total from "@/assets/total.png";
 import money from "@/assets/money.png";
 import daily from "@/assets/daily.png";
-import { ref } from "vue";
+import { ref, reactive } from "vue";
 import { useChart } from "@/hooks/useChart";
+import { chartDataApi } from "@/api/dashboard";
 
-const chartOptions: any = {
-  title: {
-    text: "电量统计",
-  },
-  tooltip: {
-    trigger: "axis",
-  },
-  legend: {
-    data: ["充电量", "充电时长", "充电功率"],
-  },
-  xAxis: {
-    type: "category",
-    boundaryGap: false,
-    data: [
-      "13:00",
-      "14:00",
-      "15:00",
-      "16:00",
-      "17:00",
-      "18:00",
-      "19:00",
-      "20:00",
-      "21:00",
+// 接口是异步调用的,无法保证这个执行完之后才执行 useChart
+const setChartData = async () => {
+  // 转成响应式的
+  // 配置项放到函数内部
+  const chartOptions: any = reactive({
+    title: {
+      text: "电量统计",
+    },
+    tooltip: {
+      trigger: "axis",
+    },
+    legend: {
+      data: [],
+    },
+    xAxis: {
+      type: "category",
+      boundaryGap: false,
+      data: [
+        "13:00",
+        "14:00",
+        "15:00",
+        "16:00",
+        "17:00",
+        "18:00",
+        "19:00",
+        "20:00",
+        "21:00",
+      ],
+    },
+    yAxis: {
+      type: "value",
+      axisLabel: {
+        formatter: "{value} kw",
+      },
+    },
+    series: [
+      {
+        name: "",
+        type: "line",
+        data: [],
+        smooth: true,
+        lineStyle: {
+          width: 5,
+        },
+        itemStyle: {
+          color: "purple",
+          shadowBlur: 10,
+          shadowColor: "rgba(0, 255, 0, 0.5)",
+        },
+      },
+      {
+        name: "",
+        type: "line",
+        data: [],
+        smooth: true,
+        lineStyle: {
+          width: 5,
+        },
+        itemStyle: {
+          color: "skyblue",
+          shadowBlur: 10,
+          shadowColor: "rgba(0, 0, 255, 0.5)",
+        },
+      },
+      {
+        name: "",
+        type: "line",
+        data: [],
+        smooth: true,
+        lineStyle: {
+          width: 5,
+        },
+        itemStyle: {
+          color: "red",
+          shadowBlur: 10,
+          shadowColor: "rgba(0, 0, 255, 0.5)",
+        },
+      },
     ],
-  },
-  yAxis: {
-    type: "value",
-    axisLabel: {
-      formatter: "{value} kw",
-    },
-  },
-  series: [
-    {
-      name: "充电量",
-      type: "line",
-      data: [20, 20, 36, 10, 10, 20],
-      smooth: true,
-      lineStyle: {
-        width: 5,
-      },
-      itemStyle: {
-        color: "purple",
-        shadowBlur: 10,
-        shadowColor: "rgba(0, 255, 0, 0.5)",
-      },
-    },
-    {
-      name: "充电时长",
-      type: "line",
-      data: [11, 22, 30, 13, 12, 19],
-      smooth: true,
-      lineStyle: {
-        width: 5,
-      },
-      itemStyle: {
-        color: "skyblue",
-        shadowBlur: 10,
-        shadowColor: "rgba(0, 0, 255, 0.5)",
-      },
-    },
-    {
-      name: "充电功率",
-      type: "line",
-      data: [80, 30, 30, 50, 40, 19],
-      smooth: true,
-      lineStyle: {
-        width: 5,
-      },
-      itemStyle: {
-        color: "red",
-        shadowBlur: 10,
-        shadowColor: "rgba(0, 0, 255, 0.5)",
-      },
-    },
-  ],
+  });
+  const res = await chartDataApi();
+  chartOptions.legend.data = res.data.list.map((item: any) => item.name);
+  for (let i = 0; i < res.data.list.length; i++) {
+    chartOptions.series[i].name = res.data.list[i].name;
+    chartOptions.series[i].data = res.data.list[i].data;
+  }
+
+  // 返回组件配置项
+  return chartOptions;
 };
 
 // vue3里不提倡操作 dom，所以不推荐使用 document.getElementById
 // 使用 ref 来操作 dom
 // 基于 dom 元素已经挂载完毕了,不能在 setup 里写了，要在 onMounted 里写
 
-const chartRef = ref(null);
+setChartData();
 const chartRef2 = ref(null);
-useChart(chartRef, chartOptions);
-useChart(chartRef2, chartOptions);
+useChart(chartRef2, setChartData);
 </script>
 
 <style lang="less" scoped>
