@@ -52,12 +52,23 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from "vue";
+import { listApi } from "@/api/chargingstation";
+import { ref, reactive, onMounted } from "vue";
 const select = ref("name"); // 默认查询选择项
 
 const formParams = reactive({
   input: "",
   value: 1,
+});
+
+const loadData = async () => {
+  const res = await listApi({ page: 1, pageSize: 10, status: 1 });
+  console.log(res);
+};
+
+// 在页面挂载完毕后执行的内容
+onMounted(() => {
+  loadData();
 });
 </script>
 
