@@ -668,7 +668,9 @@ Mock.mock(domainPrefix + "/stationList", "post", (options: any) => {
   return {
     code: 200,
     success: true,
-    data: paginatedItems,
-    total,
+    data: {
+      list: paginatedItems,
+      total: total,
+    },
   };
 });
