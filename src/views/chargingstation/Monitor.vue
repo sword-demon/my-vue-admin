@@ -54,7 +54,9 @@
   </el-card>
 
   <el-card class="mt">
-    <el-button type="primary" icon="Plus">新增充电站</el-button>
+    <el-button type="primary" icon="Plus" @click="handleAdd"
+      >新增充电站</el-button
+    >
   </el-card>
 
   <el-card class="mt">
@@ -107,6 +109,7 @@ import { listApi } from "@/api/chargingstation";
 import { ref, reactive, onMounted } from "vue";
 import StationForm from "./components/StationForm.vue";
 import type { RowType } from "@/types/station";
+import { useStationStore } from "@/store/station";
 
 // 下拉选项默认值
 const select = ref("name"); // 默认查询选择项
@@ -116,6 +119,8 @@ const formParams = reactive({
   input: "",
   value: 1,
 });
+
+const stationStore = useStationStore();
 
 // 控制表格加载属性
 const loading = ref<boolean>(false);
@@ -171,13 +176,34 @@ onMounted(() => {
 // 控制弹窗属性
 const visible = ref<boolean>(false);
 
+const { setRowData } = stationStore;
+
 const edit = (row: RowType) => {
+  setRowData(row);
   visible.value = true;
-  console.log(row);
 };
 
 const handleClose = () => {
   visible.value = false;
+};
+
+// 点击新增充电站
+const handleAdd = () => {
+  // 清空 pinia 中的数据
+  setRowData({
+    name: "",
+    id: "",
+    city: "",
+    person: "",
+    tel: "",
+    fast: "",
+    slow: "",
+    status: 1,
+    now: "",
+    fault: "",
+  });
+  // 打开弹窗
+  visible.value = true;
 };
 </script>
 

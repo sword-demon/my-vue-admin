@@ -1,8 +1,9 @@
 <template>
   <el-dialog
     v-model="props.dialogVisible"
-    title="新增充电站"
+    :title="title"
     :before-close="handleClose"
+    destroy-on-close
   >
     <el-form label-width="120" :rules="rules" :model="ruleForm">
       <el-row>
@@ -19,6 +20,7 @@
               v-model="ruleForm.id"
               clearable
               placeholder="请输入站点id"
+              :disabled="disabled"
             />
           </el-form-item>
           <el-form-item label="所属城市" prop="city">
@@ -59,7 +61,11 @@
             />
           </el-form-item>
           <el-form-item label="充电站状态" prop="status">
-            <el-select placeholder="充电站状态" v-model="ruleForm.status">
+            <el-select
+              placeholder="充电站状态"
+              v-model="ruleForm.status"
+              :disabled="disabled"
+            >
               <el-option label="全部" :value="1"></el-option>
               <el-option label="使用中" :value="2"></el-option>
               <el-option label="空闲中" :value="3"></el-option>
@@ -72,6 +78,7 @@
               v-model="ruleForm.now"
               clearable
               placeholder="请输入正在充电"
+              :disabled="disabled"
             />
           </el-form-item>
           <el-form-item label="故障数" prop="fault">
@@ -79,6 +86,7 @@
               v-model="ruleForm.fault"
               clearable
               placeholder="请输入故障数"
+              :disabled="disabled"
             />
           </el-form-item>
         </el-col>
@@ -96,7 +104,9 @@
 <script setup lang="ts">
 import type { FormRules } from "element-plus";
 import type { RowType } from "@/types/station";
-import { reactive, ref } from "vue";
+import { reactive, ref, watch } from "vue";
+import { useStationStore } from "@/store/station";
+import { storeToRefs } from "pinia";
 
 // 接收父组件传递的属性
 const props = defineProps({
@@ -107,7 +117,17 @@ const props = defineProps({
   },
 });
 
+// 弹窗标题
+const title = ref<string>("");
+
 const emit = defineEmits(["close"]);
+
+const stationStore = useStationStore();
+
+const { rawData } = storeToRefs(stationStore);
+
+// 默认不禁用
+const disabled = ref(false);
 
 const ruleForm = ref<RowType>({
   name: "",
@@ -133,6 +153,23 @@ const rules = reactive<FormRules<RowType>>({
   now: [{ required: true, message: "请输入正在充电", trigger: "blur" }],
   fault: [{ required: true, message: "请输入故障数", trigger: "blur" }],
 });
+
+// 对话框显示状态进行监听
+// 如果显示了,就开始赋值
+watch(
+  () => props.dialogVisible,
+  () => {
+    // 要处理为编辑的时候才禁用
+    if (rawData.value.id) {
+      title.value = "编辑充电站信息";
+      disabled.value = true;
+    } else {
+      title.value = "新增充电站";
+      disabled.value = false;
+    }
+    ruleForm.value = rawData.value;
+  }
+);
 
 const handleClose = () => {
   handleCancel();
